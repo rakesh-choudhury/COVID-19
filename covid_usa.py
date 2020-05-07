@@ -21,17 +21,33 @@ def usa():
     covid_usa = covid_usa.rename(columns={'cases':'Confirmed','deaths':'Deaths'})
     df = covid_usa.groupby(['county','fips'], as_index=False).max()
 
-    fig = px.choropleth_mapbox(df, geojson=counties, locations='fips', color=opt, hover_name='county',
-                               #color_continuous_scale="Viridis", 
-                               range_color=color,
-                               mapbox_style="carto-positron",
-                               zoom=3, center = {"lat": 37.0902, "lon": -95.7129},
-                               opacity=0.5,
-                               #labels={'unemp':'unemployment rate'}
-                               color_continuous_scale= ['#EFEC2B','#69EF2B','#2BEFE3','#2B40EF','#C82BEF','#EF2B4C'], 
-                               template='plotly_dark', labels={'fips':'County Code'},
-                               width=930, height=600
-                              )
+    # fig = px.choropleth(df, geojson=counties, locations='fips', color=opt, hover_name='county',
+    #                            range_color=color,
+    #                            mapbox_style="carto-positron",
+    #                            zoom=3, center = {"lat": 37.0902, "lon": -95.7129},
+    #                            opacity=0.5,
+    #                            color_continuous_scale= ['#EFEC2B','#69EF2B','#2BEFE3','#2B40EF','#C82BEF','#EF2B4C'], 
+    #                            template='plotly_dark', 
+    #                            labels={'fips':'County Code'},
+    #                            width=930, height=600
+    #                           )
+    fig = px.choropleth(df, locations='fips', color=opt, hover_name='county', geojson= counties,
+                           color_continuous_scale="Viridis_r", 
+                           range_color=color,
+                           #mapbox_style="carto-positron",
+                           #zoom=3, 
+                           #center = {"lat": 37.0902, "lon": -95.7129},
+                           #opacity=0.5,
+                           #labels={'unemp':'unemployment rate'}
+                           #color_continuous_scale= ['#EFEC2B','#69EF2B','#2BEFE3','#2B40EF','#C82BEF','#EF2B4C'], 
+                           #template='plotly_dark', 
+                            scope='usa'
+                          )
+    fig.update_traces(marker_line_width=0, marker_opacity=0.8)
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    fig.update_geos(
+    showsubunits=True, subunitcolor="black"
+    )
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     st.plotly_chart(fig)
     
@@ -40,7 +56,7 @@ def usa():
 
     opt = st.multiselect('Select States', covid_usa.state.unique().tolist(), default=covid_usa.state.unique()[20:25].tolist())
     opt1 = st.selectbox('Type of Case in USA',('Confirmed','Deaths'))
-    opt_lin_log = st.radio('Select the Type of Scale',['Log Scale','Linear Scale'])
+    opt_lin_log = st.radio('Select the Type of Scale',['Logarithmic Scale','Linear Scale'])
     if opt_lin_log == 'Linear Scale':
         scale =False
     else:

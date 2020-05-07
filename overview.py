@@ -3,6 +3,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import plotly.express as px
+import datetime
 
 def ove():
     st.title('CORONAVIRUS PANDEMIC OVERVIEW')
@@ -20,6 +21,8 @@ def ove():
     df = df.sort_values(by=['total_cases'], ascending=False)
     cases= df.total_cases.sum()
     deaths = df.total_deaths.sum()
+    df = df.fillna(0)
+    df = df.astype({'per_mil_cases':'int64','per_mil_deaths':'int64'})
     df = df.rename(columns={'location':'Country','date':'Date','new_cases':'New Cases','total_cases':'Total Cases',
                         'new_deaths':'New Deaths','total_deaths':'Total Deaths','per_mil_cases':'Confirmed Cases Per Million',
                         'per_mil_deaths':'Deaths Per Million'})
@@ -29,8 +32,12 @@ def ove():
     covid_rec = covid_rec.iloc[1:,:] #removing the redundant first row
     covid_rec = covid_rec.rename(columns={'ISO 3166-1 Alpha 3-Codes':'iso_alpha','Country/Region':'Country','Value':'Cases','Lat':'lat','Long':'lon'})
     covid_rec = covid_rec.astype({'Cases':'int64','lat':'float64','lon':'float64'}) #changing data type
-    recover = covid_rec.Cases.sum()
+    recover = covid_rec[covid_rec['Date']==covid_rec.Date.max()].Cases.sum()
+    date = pd.to_datetime(covid_rec['Date'])
+    date= date.max().strftime('%d %b %Y')
     st.markdown('# Total Coronavirus Cases: '+str(cases))
     st.markdown('# Total Death Cases: '+str(deaths))
     st.markdown('# Total Recovery: ' +str(recover))
+    st.markdown('## Last Updated: **' +date+'**')
     st.table(df.style.hide_index())
+    st.write('©Rakesh Choudhury')

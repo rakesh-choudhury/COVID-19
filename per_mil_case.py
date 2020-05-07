@@ -26,6 +26,8 @@ def mil():
     # Cases per million population
     covid_pop['per_mil_cases'] = (covid_pop['total_cases']/covid_pop['population'])*1000000
     covid_pop['per_mil_deaths'] = (covid_pop['total_deaths']/covid_pop['population'])*1000000
+    covid_pop = covid_pop.fillna(0)
+    covid_pop = covid_pop.astype({'per_mil_cases':'int64','per_mil_deaths':'int64'})
 
     if opt == 'Confirmed':
         fig = px.bar(covid_pop.iloc[min(idx):max(idx),:], x="location", y='per_mil_cases',template='plotly_dark', title='COVID-19 Confirmed Cases',

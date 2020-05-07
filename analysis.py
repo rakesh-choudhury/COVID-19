@@ -17,7 +17,7 @@ def analysis():
 
     opt = st.multiselect('Select Countries', covid_new_plot.location.unique().tolist(), default=covid_new_plot.location.unique()[190:197].tolist())
     opt1 = st.selectbox('Type of Case',('Confirmed','Deaths'))
-    opt_lin_log = st.radio('Select the type of scale',['Log Scale','Linear Scale'])
+    opt_lin_log = st.radio('Select the type of scale',['Logarithmic Scale','Linear Scale'])
     if opt_lin_log == 'Linear Scale':
         scale =False
     else:
