@@ -14,8 +14,10 @@ def usa():
     opt = st.radio('Type of cases',('Confirmed','Deaths'))
     if opt=='Confirmed':
         color=(0,3000)
+        case='Confirmed'
     else:
         color=(0,200)
+        case='Deaths'
     covid_usa = pd.read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv",
                        dtype={"fips": str})
     covid_usa = covid_usa.rename(columns={'cases':'Confirmed','deaths':'Deaths'})
@@ -40,7 +42,7 @@ def usa():
                            #opacity=0.5,
                            #labels={'unemp':'unemployment rate'}
                            #color_continuous_scale= ['#EFEC2B','#69EF2B','#2BEFE3','#2B40EF','#C82BEF','#EF2B4C'], 
-                           #template='plotly_dark', 
+                           width=930, height=600, labels={'fips':'County Code'},
                             scope='usa'
                           )
     fig.update_traces(marker_line_width=0, marker_opacity=0.8)
