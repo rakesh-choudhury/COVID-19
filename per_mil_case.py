@@ -20,8 +20,9 @@ def mil():
 
     st.title('Cases Per Million Analysis')
     max_val = covid_pop.index.size -1
-    opt = st.selectbox('Type of Cases',('Confirmed','Deaths'))
-    idx = st.slider('Slide to Limit The Number of Countries',min_value=0, max_value=max_val, value=[0,max_val])
+    idx= st.multiselect('Select the countries',covid_new_plot.location.unique().tolist(), default=covid_new_plot.location.unique()[49:68].tolist())
+    opt = st.radio('Type of Cases',('Confirmed','Deaths'))
+    #idx = st.slider('Slide to Limit The Number of Countries',min_value=0, max_value=max_val, value=[0,max_val])
 
     # Cases per million population
     covid_pop['per_mil_cases'] = (covid_pop['total_cases']/covid_pop['population'])*1000000
@@ -30,11 +31,11 @@ def mil():
     covid_pop = covid_pop.astype({'per_mil_cases':'int64','per_mil_deaths':'int64'})
 
     if opt == 'Confirmed':
-        fig = px.bar(covid_pop.iloc[min(idx):max(idx),:], x="location", y='per_mil_cases',template='plotly_dark', title='COVID-19 Confirmed Cases',
+        fig = px.bar(covid_pop[covid_pop['location'].isin(idx)], x="location", y='per_mil_cases',template='plotly_dark', title='COVID-19 Confirmed Cases',
         labels={'per_mil_cases':'Cases Per Million','location':'Country'}, width=975, height=600)
         st.plotly_chart(fig)
     else:
-        fig = px.bar(covid_pop.iloc[min(idx):max(idx),:], x="location", y='per_mil_deaths',template='plotly_dark', title='COVID-19 Death Cases',
+        fig = px.bar(covid_pop[covid_pop['location'].isin(idx)], x="location", y='per_mil_deaths',template='plotly_dark', title='COVID-19 Death Cases',
         labels={'per_mil_deaths':'Deaths Per Million','location':'Country'}, width=975, height=600)
         st.plotly_chart(fig)
     st.write('©Rakesh Choudhury')
