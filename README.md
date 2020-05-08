@@ -7,5 +7,6 @@ Follow these steps to run this application in your local system:
 * You will see this local URL:</br>
 ![screenshot](URL.png)
 * Copy and paste URL into any browser to see the page.</br></br>
+## Heroku app
 Or Check it out in [Heroku app](https://covid19-rakesh.herokuapp.com/)
 ![screenrec](output.gif)
