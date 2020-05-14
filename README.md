@@ -1,5 +1,5 @@
 # COVID-19
-COVID-19 Data Analysis
+COVID-19 Data Analysis</br>
 Follow these steps to run this application in your local system:
 * Clone this repository to your local system
 * Install all the dependencies `pip install -r requirements.txt`
